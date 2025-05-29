@@ -1,0 +1,11 @@
+groups:
+- name: demo-alerts
+  rules:
+  - alert: HighCPUUsage
+    expr: rate(container_cpu_usage_seconds_total[5m]) > 0.9
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage detected"
+      description: "Container is using over 90% CPU for more than 1 minute."

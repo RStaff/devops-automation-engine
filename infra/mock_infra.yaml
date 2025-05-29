@@ -1,0 +1,5 @@
+# Mock Infrastructure as Code (e.g., Terraform equivalent)
+resource:
+  type: aws_s3_bucket
+  name: avangrid-data-logs
+  region: us-east-1
