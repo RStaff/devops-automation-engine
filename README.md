@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Avantgrid GitOps Architecture (Sample)
+#  GitOps Architecture (Sample)
 
 This is a simplified GitOps-ready folder structure representing a modern Kubernetes + IaC + Argo CD setup.
 
