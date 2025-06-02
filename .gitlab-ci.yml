@@ -1,0 +1,53 @@
+# .gitlab-ci.yml
+
+stages:
+  - build
+  - push
+  - deploy
+
+variables:
+  IMAGE_NAME: "$CI_REGISTRY_IMAGE/k8s-app"
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+# 1. Build Docker image from your app directory
+build_image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG ./k8s-app
+  only:
+    - main
+
+# 2. Push image to GitLab Container Registry
+push_image:
+  stage: push
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+  only:
+    - main
+
+# 3. Update the application.yaml with new image tag and sync ArgoCD
+update_manifest_and_sync:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache git openssh
+  script:
+    - echo "$SSH_PRIVATE_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+    - mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git clone git@gitlab.com:YourUser/your-argocd-manifests.git
+    - cd your-argocd-manifests/argocd
+    - sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" application.yaml
+    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git add .
+    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git commit -m "Update image to $IMAGE_TAG"
+    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git push
+  only:
+    - main
+
