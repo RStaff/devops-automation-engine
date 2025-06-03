@@ -1,5 +1,3 @@
-# .gitlab-ci.yml
-
 stages:
   - build
   - push
@@ -9,7 +7,6 @@ variables:
   IMAGE_NAME: "$CI_REGISTRY_IMAGE/k8s-app"
   IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
 
-# 1. Build Docker image from your app directory
 build_image:
   stage: build
   image: docker:latest
@@ -21,7 +18,6 @@ build_image:
   only:
     - main
 
-# 2. Push image to GitLab Container Registry
 push_image:
   stage: push
   image: docker:latest
@@ -33,7 +29,6 @@ push_image:
   only:
     - main
 
-# 3. Update the application.yaml with new image tag and sync ArgoCD
 update_manifest_and_sync:
   stage: deploy
   image: alpine:latest
@@ -42,12 +37,11 @@ update_manifest_and_sync:
   script:
     - echo "$SSH_PRIVATE_KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
     - mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git clone git@gitlab.com:YourUser/your-argocd-manifests.git
-    - cd your-argocd-manifests/argocd
-    - sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" application.yaml
-    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git add .
-    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git commit -m "Update image to $IMAGE_TAG"
-    - GIT_SSH_COMMAND='ssh -i /tmp/deploy_key' git push
+    - 'GIT_SSH_COMMAND="ssh -i /tmp/deploy_key" git clone git@gitlab.com:rossstafford1/devops-automation-setup.git'
+    - cd devops-automation-setup/argocd
+    - 'sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" application.yaml'
+    - 'GIT_SSH_COMMAND="ssh -i /tmp/deploy_key" git add .'
+    - 'GIT_SSH_COMMAND="ssh -i /tmp/deploy_key" git commit -m "Update image to $IMAGE_TAG"'
+    - 'GIT_SSH_COMMAND="ssh -i /tmp/deploy_key" git push'
   only:
     - main
-
