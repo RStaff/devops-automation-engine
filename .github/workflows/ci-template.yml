@@ -36,6 +36,13 @@ jobs:
       matrix:
         tool: ${{ fromJson(inputs.tools) }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Load helper scripts
+        run: |
+          source _Conventions/helpers.sh
+
       - name: Execute tool step ${{ matrix.tool }}
         run: run_tool_step "${{ matrix.tool }}" "${{ inputs.pipeline-dir }}"
 
@@ -45,6 +52,12 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Load helper scripts
+        run: |
+          source _Conventions/helpers.sh
+
       - name: Send notification
         run: notify_status "${{ job.status }}" "${{ inputs.pipeline-dir }}"
-
