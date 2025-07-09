@@ -39,9 +39,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Copy helper scripts into pipeline dir
+        run: cp -R _Conventions "${{ inputs.pipeline-dir }}"
+
       - name: Load helper scripts
         run: |
-          source _Conventions/helpers.sh
+          source "${{ inputs.pipeline-dir }}/_Conventions/helpers.sh"
 
       - name: Execute tool step ${{ matrix.tool }}
         run: run_tool_step "${{ matrix.tool }}" "${{ inputs.pipeline-dir }}"
@@ -55,9 +58,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Copy helper scripts into pipeline dir
+        run: cp -R _Conventions "${{ inputs.pipeline-dir }}"
+
       - name: Load helper scripts
         run: |
-          source _Conventions/helpers.sh
+          source "${{ inputs.pipeline-dir }}/_Conventions/helpers.sh"
 
       - name: Send notification
         run: notify_status "${{ job.status }}" "${{ inputs.pipeline-dir }}"
