@@ -36,18 +36,12 @@ jobs:
       matrix:
         tool: ${{ fromJson(inputs.tools) }}
     steps:
-      - name: Checkout code
+      - name: Run tool step ${{ matrix.tool }}
         uses: actions/checkout@v3
-
-      - name: Copy helper scripts into pipeline dir
-        run: cp -R _Conventions "${{ inputs.pipeline-dir }}"
-
-      - name: Load helper scripts
         run: |
+          cp -R _Conventions "${{ inputs.pipeline-dir }}"
           source "${{ inputs.pipeline-dir }}/_Conventions/helpers.sh"
-
-      - name: Execute tool step ${{ matrix.tool }}
-        run: run_tool_step "${{ matrix.tool }}" "${{ inputs.pipeline-dir }}"
+          run_tool_step "${{ matrix.tool }}" "${{ inputs.pipeline-dir }}"
 
   notify:
     name: Notify Status
@@ -55,15 +49,9 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Copy helper scripts into pipeline dir
-        run: cp -R _Conventions "${{ inputs.pipeline-dir }}"
-
-      - name: Load helper scripts
-        run: |
-          source "${{ inputs.pipeline-dir }}/_Conventions/helpers.sh"
-
       - name: Send notification
-        run: notify_status "${{ job.status }}" "${{ inputs.pipeline-dir }}"
+        uses: actions/checkout@v3
+        run: |
+          cp -R _Conventions "${{ inputs.pipeline-dir }}"
+          source "${{ inputs.pipeline-dir }}/_Conventions/helpers.sh"
+          notify_status "${{ job.status }}" "${{ inputs.pipeline-dir }}"
