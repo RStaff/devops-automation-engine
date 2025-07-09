@@ -8,7 +8,7 @@ on:
 
 jobs:
   run-website-pipeline:
-    uses: ./.github/workflows/ci-template.yml@v1.0.0
+    uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: website_pipeline
       environment: dev
