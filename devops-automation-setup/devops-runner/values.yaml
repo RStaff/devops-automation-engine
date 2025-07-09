@@ -1,0 +1,18 @@
+gitlabUrl: https://gitlab.com
+runnerToken: "glrt-U3feYY7Qg2Uo9BmEnHTHnG86MQpwOjE1eGx1agp0OjMKdTpndGxseBg.01.1j1rje1as"
+
+
+rbac:
+  create: true
+
+runners:
+  config: |
+    [[runners]]
+      executor = "kubernetes"
+      [runners.kubernetes]
+        image = "alpine:latest"
+        privileged = true
+        namespace = "default"
+        poll_timeout = 180
+        cpu_request = "100m"
+        memory_request = "128Mi"
