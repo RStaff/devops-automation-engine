@@ -5,12 +5,15 @@ on:
       pipeline-dir:
         description: 'Path to the pipeline directory'
         required: true
+        type: string
       environment:
         description: 'Environment (dev/staging/prod)'
         required: true
+        type: string
       tools:
         description: 'JSON array of tools (e.g. ["npm","docker","helm"])'
         required: true
+        type: string
 
 jobs:
   prepare:
