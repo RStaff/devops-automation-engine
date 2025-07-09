@@ -10,6 +10,10 @@ on:
         required: true
       tools:
         description: 'JSON array of tools (e.g. ["npm","docker"])'
+        description: 'Environment name (dev/staging/prod)'
+        required: true
+      tools:
+        description: 'JSON array of tools to run (e.g. ["npm","docker"])'
         required: true
 
 jobs:
@@ -19,6 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Load helper scripts
+        run: |
           source _Conventions/helpers.sh
           init_pipeline "\${{ inputs.pipeline-dir }}" "\${{ inputs.environment }}"
 
@@ -40,3 +49,6 @@ jobs:
     if: always()
     steps:
       - run: notify_status "\${{ job.status }}" "\${{ inputs.pipeline-dir }}"
+      - name: Send notification
+        run: notify_status "\${{ job.status }}" "\${{ inputs.pipeline-dir }}"
+
