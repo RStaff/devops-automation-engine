@@ -12,4 +12,4 @@ jobs:
     with:
       pipeline-dir: mobile_pipeline
       environment: dev
-      tools: '["gradle","docker"]'
+      tools: '["build","test","deploy"]'
