@@ -1,22 +1,18 @@
 #!/usr/bin/env bash
-# Stub helpers for pipeline
+# Minimal stubbed helpers — no git calls, just echo
 
 init_pipeline() {
-  PIPE_DIR="$1"
-  ENV="$2"
-  echo "🚀 Initializing pipeline folder '\$PIPE_DIR' for environment '\$ENV'"
-  # e.g. cd "\$PIPE_DIR"
+  echo "🚀 init_pipeline called for '$1' in '$2'"
 }
 
 run_tool_step() {
   TOOL="$1"
   PIPE_DIR="$2"
-  echo "🔧 Running tool \$TOOL on pipeline \$PIPE_DIR"
-  # stub: you’d implement npm build, docker build, etc.
+  echo "🔧 running tool '$TOOL' in pipeline '$PIPE_DIR'"
 }
 
 notify_status() {
   STATUS="$1"
   PIPE_DIR="$2"
-  echo "📣 Pipeline '\$PIPE_DIR' finished with status '\$STATUS'"
+  echo "📣 pipeline '$PIPE_DIR' finished with status '$STATUS'"
 }
