@@ -1,4 +1,3 @@
-cat > .github/workflows/ci-template.yml <<'EOF'
 # .github/workflows/ci-template.yml
 on:
   workflow_call:
