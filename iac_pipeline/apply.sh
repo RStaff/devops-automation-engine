@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-echo "🚀 Applying Terraform changes in \$(pwd)"
-# terraform apply tfplan
+set -e
+
+echo "🚀 Applying Terraform plan..."
+terraform apply -input=false tfplan
+
+echo "✅ Terraform apply complete."

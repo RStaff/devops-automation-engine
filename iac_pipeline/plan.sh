@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
-echo "🔍 Running Terraform plan in \$(pwd)"
-# terraform init && terraform plan -out=tfplan
+set -e
+
+echo "🔍 Initializing Terraform and planning..."
+terraform init -input=false
+terraform plan -out=tfplan -input=false
+
+echo "✅ Terraform plan complete. Saved to tfplan."
