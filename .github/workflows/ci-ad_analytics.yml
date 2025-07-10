@@ -1,15 +1,15 @@
-name: CI – robotics Pipeline
+name: CI – ad analytics Pipeline
 
 on:
   push:
     paths:
-      - 'robotics_pipeline/**'
+      - 'ad_analytics_pipeline/**'
   workflow_dispatch:
 
 jobs:
-  run-robotics-pipeline:
+  run-ad_analytics-pipeline:
     uses: ./.github/workflows/ci-template.yml
     with:
-      pipeline-dir: robotics_pipeline
+      pipeline-dir: ad_analytics_pipeline
       environment: dev
       tools: '["stub1","stub2","stub3"]'

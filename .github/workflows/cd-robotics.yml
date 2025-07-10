@@ -1,23 +1,12 @@
-name: CD – Robotics Deployment
+name: CD – robotics Deployment
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  deploy-robotics:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Flash firmware
-        run: |
-          robotics-cli flash --port ${{ secrets.ROBOT_PORT }} robotics_pipeline/firmware.bin
-      - name: Deploy container to device
-        run: |
-          scp robotics_pipeline/container.tar ${{ secrets.DEVICE_USER }}@${{ secrets.DEVICE_HOST }}:/tmp
-          ssh ${{ secrets.DEVICE_USER }}@${{ secrets.DEVICE_HOST }} \
-            "docker load -i /tmp/container.tar && docker stop robot && docker rm robot && docker run -d --name robot robotics_image"
-      - name: Run self-test
-        run: |
-          ssh ${{ secrets.DEVICE_USER }}@${{ secrets.DEVICE_HOST }} robotics-cli self-test
+  deploy-robotics-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: robotics_pipeline
+      environment: prod
+      tools: '["deploy"]'

@@ -1,12 +1,12 @@
-name: CD – ai Deployment
+name: CD – chatbot Deployment
 
 on:
   workflow_dispatch:
 
 jobs:
-  deploy-ai-pipeline:
+  deploy-chatbot-pipeline:
     uses: ./.github/workflows/ci-template.yml
     with:
-      pipeline-dir: ai_pipeline
+      pipeline-dir: chatbot_pipeline
       environment: prod
       tools: '["deploy"]'

@@ -1,4 +1,4 @@
-name: CI – Chatbot Automation Pipeline
+name: CI – chatbot Pipeline
 
 on:
   push:
@@ -12,4 +12,4 @@ jobs:
     with:
       pipeline-dir: chatbot_pipeline
       environment: dev
-      tools: '["train","deploy","monitor"]'
+      tools: '["stub1","stub2","stub3"]'

@@ -1,4 +1,4 @@
-name: CI – Lead Generation Pipeline
+name: CI – lead generation Pipeline
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-lead-generation-pipeline:
+  run-lead_generation-pipeline:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: lead_generation_pipeline
       environment: dev
-      tools: '["ingest","enrich","score","dispatch"]'
+      tools: '["stub1","stub2","stub3"]'
