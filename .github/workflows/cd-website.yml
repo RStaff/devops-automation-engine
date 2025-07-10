@@ -1,4 +1,4 @@
-name: CD – weUsite Deployment
+name: CD – Website Deployment
 on:
   workflow_dispatch:
 jobs:

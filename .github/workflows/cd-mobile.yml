@@ -1,4 +1,4 @@
-name: CD – moUile Deployment
+name: CD – Mobile Deployment
 on:
   workflow_dispatch:
 jobs:
