@@ -1,16 +1,16 @@
 ---
-name: CI – Ad Analytics Pipeline
+name: "CI – Ad Analytics Pipeline"
 
 on:
   push:
     paths:
-      - 'ad_analytics_pipeline/**'
-  workflow_dispatch:
+      - "ad_analytics_pipeline/**"
+  workflow_dispatch: {}
 
 jobs:
   run-ad-analytics-pipeline:
     uses: ./.github/workflows/ci-template.yml
     with:
-      pipeline-dir: ad_analytics_pipeline
-      environment: dev
+      pipeline-dir: "ad_analytics_pipeline"
+      environment: "dev"
       tools: '["extract","transform","load"]'
