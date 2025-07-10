@@ -10,7 +10,7 @@ jobs:
   run-iac-pipeline:
     uses: ./.github/workflows/ci-template.yml
     with:
-      pipeline-dir: iac_pipeline
+      pipeline-dir: ingestion_pipeline/financial
       environment: dev
       tools: '["tflint","checkov","plan","apply","destroy"]'
 

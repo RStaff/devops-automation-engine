@@ -2,7 +2,7 @@
 on:
   workflow_call:
     inputs:
-      pipeline-dir:
+      pipeline-dir: ingestion_pipeline/financial
         description: "Path to the pipeline directory"
         required: true
         type: string
