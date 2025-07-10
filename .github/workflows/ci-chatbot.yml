@@ -1,0 +1,15 @@
+name: CI – Chatbot Pipeline
+
+on:
+  push:
+    paths:
+      - 'chatbot_pipeline/**'
+  workflow_dispatch:
+
+jobs:
+  run-chatbot-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: chatbot_pipeline
+      environment: dev
+      tools: '["build","test","deploy"]'
