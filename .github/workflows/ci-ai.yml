@@ -1,4 +1,4 @@
-name: CI – AI Model Pipeline
+name: CI – AI Pipeline
 
 on:
   push:
@@ -12,4 +12,4 @@ jobs:
     with:
       pipeline-dir: ai_pipeline
       environment: dev
-      tools: '["lint","test","package"]'
+      tools: '["preprocess","train","evaluate","deploy"]'
