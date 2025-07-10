@@ -1,0 +1,15 @@
+name: CI – Robotics Pipeline
+
+on:
+  push:
+    paths:
+      - 'robotics_pipeline/**'
+  workflow_dispatch:
+
+jobs:
+  run-robotics-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: robotics_pipeline
+      environment: dev
+      tools: '["build","simulate","package"]'

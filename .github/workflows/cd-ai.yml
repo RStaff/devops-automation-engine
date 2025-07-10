@@ -1,0 +1,20 @@
+name: CD – AI Model Deployment
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-ai-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & push Docker image
+        run: |
+          docker build -t ${{ secrets.REGISTRY }}/ai-model:${{ github.sha }} ai_pipeline
+          docker push ${{ secrets.REGISTRY }}/ai-model:${{ github.sha }}
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/ai-model ai-model=${{ secrets.REGISTRY }}/ai-model:${{ github.sha }}
+          kubectl rollout status deployment/ai-model

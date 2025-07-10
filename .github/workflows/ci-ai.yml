@@ -1,0 +1,15 @@
+name: CI – AI Model Pipeline
+
+on:
+  push:
+    paths:
+      - 'ai_pipeline/**'
+  workflow_dispatch:
+
+jobs:
+  run-ai-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: ai_pipeline
+      environment: dev
+      tools: '["lint","test","package"]'
