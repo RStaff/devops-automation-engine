@@ -22,10 +22,10 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-       env:
-         GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-         GCP_SA_KEY:    ${{ secrets.GCP_SA_KEY }}
-         GCP_REGION:    ${{ secrets.GCP_REGION }}
+    env:
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_SA_KEY:    ${{ secrets.GCP_SA_KEY }}
+      GCP_REGION:    ${{ secrets.GCP_REGION }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
