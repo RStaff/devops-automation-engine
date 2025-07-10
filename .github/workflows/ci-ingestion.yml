@@ -1,0 +1,15 @@
+name: CI – Ingestion Pipeline
+
+on:
+  push:
+    paths:
+      - 'ingestion_pipeline/financial/**'
+  workflow_dispatch:
+
+jobs:
+  run-ingestion-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: ingestion_pipeline/financial
+      environment: dev
+      tools: '["build","test","deploy"]'
