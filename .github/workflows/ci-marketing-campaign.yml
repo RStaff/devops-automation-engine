@@ -1,0 +1,15 @@
+name: CI – Marketing Campaign Pipeline
+
+on:
+  push:
+    paths:
+      - 'marketing_campaign_pipeline/**'
+  workflow_dispatch:
+
+jobs:
+  run-marketing-campaign-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: marketing_campaign_pipeline
+      environment: dev
+      tools: '["plan","launch","monitor"]'
