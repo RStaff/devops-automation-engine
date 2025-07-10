@@ -1,12 +1,14 @@
-name: CD – ${v^} Deployment
+name: CD – content creation Deployment
+
 on:
   push:
     tags:
       - 'v*.*.*'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v3
-      - run: ./${v}_pipeline/deploy.sh
+      - run: ./content_creation_pipeline/deploy.sh

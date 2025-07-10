@@ -1,12 +1,14 @@
-name: CD – ${v^} Deployment
+name: CD – iac Deployment
+
 on:
   push:
     tags:
       - 'v*.*.*'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v3
-      - run: ./${v}_pipeline/deploy.sh
+      - run: ./iac_pipeline/deploy.sh

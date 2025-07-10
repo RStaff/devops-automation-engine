@@ -1,12 +1,14 @@
-name: CD – ${v^} Deployment
+name: CD – email campaign Deployment
+
 on:
   push:
     tags:
       - 'v*.*.*'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v3
-      - run: ./${v}_pipeline/deploy.sh
+      - run: ./email_campaign_pipeline/deploy.sh

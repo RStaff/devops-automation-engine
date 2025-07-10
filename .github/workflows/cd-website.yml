@@ -1,12 +1,14 @@
-name: CD – ${v^} Deployment
+name: CD – weusite Deployment
+
 on:
   push:
     tags:
       - 'v*.*.*'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v3
-      - run: ./${v}_pipeline/deploy.sh
+      - run: ./website_pipeline/deploy.sh
