@@ -1,4 +1,5 @@
-name: CI – ad analytics Pipeline
+# .github/workflows/ci-ad-analytics.yml
+name: CI – Ad Analytics Pipeline
 
 on:
   push:
@@ -7,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-ad_analytics-pipeline:
+  run-ad-analytics:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: ad_analytics_pipeline
       environment: dev
-      tools: '["stub1","stub2","stub3"]'
+      tools: '["extract","transform","load"]'
