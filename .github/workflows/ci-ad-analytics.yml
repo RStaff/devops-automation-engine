@@ -1,11 +1,11 @@
-# .github/workflows/ci-ad-analytics.yml
+---
 name: CI – Ad Analytics Pipeline
 
 on:
   push:
     paths:
       - 'ad_analytics_pipeline/**'
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   run-ad-analytics:
