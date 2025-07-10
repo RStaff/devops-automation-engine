@@ -1,0 +1,15 @@
+name: CI – MLOps Pipeline
+
+on:
+  push:
+    paths:
+      - 'mlops_pipeline/**'
+  workflow_dispatch:
+
+jobs:
+  run-mlops-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: mlops_pipeline
+      environment: dev
+      tools: '["train","validate","kubectl"]'
