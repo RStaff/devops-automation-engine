@@ -12,4 +12,5 @@ jobs:
     with:
       pipeline-dir: iac_pipeline
       environment: dev
-      tools: '["plan","apply","destroy"]'
+      tools: '["tflint","checkov","plan","apply","destroy"]'
+
