@@ -2,7 +2,7 @@ name: CD – social media Deployment
 on:
   workflow_dispatch:
 jobs:
-  run--deploy:
+  deploy:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: website_pipeline
