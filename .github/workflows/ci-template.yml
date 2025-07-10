@@ -11,7 +11,7 @@ on:
         required: true
         type: string
       tools:
-        description: "JSON array of tools (e.g. [\"plan\",\"apply\",\"destroy\"])"
+        description: "JSON array of tools"
         required: true
         type: string
 
@@ -19,12 +19,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Execute pipeline
+      - name: Report inputs
         run: |
-          echo "Running pipeline \${{ inputs.pipeline-dir }}"
-          for tool in \$(echo ${{ inputs.tools }} | jq -r '.[]'); do
-            echo "🔧 $tool"
-          done
+          echo "Pipeline-dir = ${{ inputs.pipeline-dir }}"
+          echo "Environment = ${{ inputs.environment }}"
+          echo "Tools       = ${{ inputs.tools }}"
