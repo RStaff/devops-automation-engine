@@ -1,4 +1,4 @@
-name: CI – IaC Pipeline
+name: CI - IaC Pipeline
 
 on:
   push:
