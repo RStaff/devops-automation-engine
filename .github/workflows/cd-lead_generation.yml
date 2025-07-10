@@ -1,0 +1,14 @@
+name: CD – Lead Generation Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-lead-generation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./lead_generation_pipeline/ingest.sh
+      - run: ./lead_generation_pipeline/enrich.sh
+      - run: ./lead_generation_pipeline/score.sh
+      - run: ./lead_generation_pipeline/dispatch.sh
