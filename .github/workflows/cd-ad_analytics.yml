@@ -1,0 +1,12 @@
+name: CD – ${v^} Deployment
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./${v}_pipeline/deploy.sh
