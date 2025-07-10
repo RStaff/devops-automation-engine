@@ -16,3 +16,12 @@ notify_status() {
   PIPE_DIR="$2"
   echo "📣 pipeline '$PIPE_DIR' finished with status '$STATUS'"
 }
+
+    tflint)
+      echo "🔍 tflint on $PIPELINE_DIR"
+      (cd "$PIPELINE_DIR" && tflint)
+      ;;
+    checkov)
+      echo "🔐 checkov on $PIPELINE_DIR"
+      checkov -d "$PIPELINE_DIR"
+      ;;
