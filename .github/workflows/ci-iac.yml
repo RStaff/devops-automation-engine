@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-iac-pipeline:
+  call-template:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: iac_pipeline
