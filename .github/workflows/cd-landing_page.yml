@@ -1,0 +1,12 @@
+name: CD – landing page Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-landing_page-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: landing_page_pipeline
+      environment: prod
+      tools: '["deploy"]'

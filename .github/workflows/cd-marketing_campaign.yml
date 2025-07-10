@@ -1,0 +1,12 @@
+name: CD – marketing campaign Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-marketing_campaign-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: marketing_campaign_pipeline
+      environment: prod
+      tools: '["deploy"]'

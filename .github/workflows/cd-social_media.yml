@@ -1,0 +1,12 @@
+name: CD – social media Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-social_media-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: social_media_pipeline
+      environment: prod
+      tools: '["deploy"]'

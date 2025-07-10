@@ -1,0 +1,12 @@
+name: CD – lead generation Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-lead_generation-pipeline:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: lead_generation_pipeline
+      environment: prod
+      tools: '["deploy"]'
