@@ -2,16 +2,16 @@
 on:
   workflow_call:
     inputs:
-      pipeline-dir: ingestion_pipeline/financial
-        description: 'Path to the pipeline directory'
+      pipeline-dir:
+        description: "Path to the pipeline directory"
         required: true
         type: string
       environment:
-        description: 'Environment (dev/staging/prod)'
+        description: "Environment (dev/staging/prod)"
         required: true
         type: string
       tools:
-        description: 'JSON array of tools (e.g. ["npm","docker","helm"])'
+        description: "JSON array of tools (e.g. [\"plan\",\"apply\",\"destroy\"])"
         required: true
         type: string
 
