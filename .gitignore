@@ -1,0 +1,7 @@
+prune-workflows.sh
+cleanup-posix.sh
+cleanup-workflows.sh
+fix-ci-indent.sh
+inject-gcp-env.sh
+scaffold-*.sh
+scripts/
