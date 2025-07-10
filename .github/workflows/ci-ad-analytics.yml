@@ -5,10 +5,10 @@ on:
   push:
     paths:
       - 'ad_analytics_pipeline/**'
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 jobs:
-  run-ad-analytics:
+  run-ad-analytics-pipeline:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: ad_analytics_pipeline
