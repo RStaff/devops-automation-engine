@@ -1,0 +1,10 @@
+name: CD – content creation Deployment
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: content_creation_pipeline
+      environment: prod
+      tools: '["deploy"]'

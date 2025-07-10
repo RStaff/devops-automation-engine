@@ -1,0 +1,10 @@
+name: CD – email campaign Deployment
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: email_campaign_pipeline
+      environment: prod
+      tools: '["deploy"]'

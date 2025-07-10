@@ -1,0 +1,10 @@
+name: CD – ingestion Deployment
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      pipeline-dir: ingestion_pipeline
+      environment: prod
+      tools: '["deploy"]'

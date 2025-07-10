@@ -1,10 +1,10 @@
-name: CD – social media Deployment
+name: CD – ad analytics Deployment
 on:
   workflow_dispatch:
 jobs:
   deploy:
     uses: ./.github/workflows/ci-template.yml
     with:
-      pipeline-dir: website_pipeline
+      pipeline-dir: ad_analytics_pipeline
       environment: prod
       tools: '["deploy"]'
