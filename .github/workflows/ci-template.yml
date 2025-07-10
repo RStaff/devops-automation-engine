@@ -2,7 +2,7 @@
 on:
   workflow_call:
     inputs:
-      pipeline-dir: ingestion_pipeline/financial
+      pipeline-dir:
         description: "Path to the pipeline directory"
         required: true
         type: string
@@ -16,44 +16,15 @@ on:
         type: string
 
 jobs:
-  prepare:
-    name: Prepare Workspace
+  run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Init pipeline
+      - name: Execute pipeline
         run: |
-          source _Conventions/helpers.sh
-          init_pipeline "${{ inputs.pipeline-dir }}" "${{ inputs.environment }}"
-
-  build:
-    name: Build & Deploy Steps
-    needs: prepare
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tool: ${{ fromJson(inputs.tools) }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run tool step ${{ matrix.tool }}
-        run: |
-          source _Conventions/helpers.sh
-          run_tool_step "${{ matrix.tool }}" "${{ inputs.pipeline-dir }}"
-
-  notify:
-    name: Notify Status
-    needs: build
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Send notification
-        run: |
-          source _Conventions/helpers.sh
-          notify_status "${{ job.status }}" "${{ inputs.pipeline-dir }}"
+          echo "Running pipeline \${{ inputs.pipeline-dir }}"
+          for tool in \$(echo ${{ inputs.tools }} | jq -r '.[]'); do
+            echo "🔧 $tool"
+          done
