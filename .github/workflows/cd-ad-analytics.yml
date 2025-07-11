@@ -1,12 +1,20 @@
-name: CD – ad analytics Deployment
+# .github/workflows/ad-analytics.yml
+name: Ad Analytics
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - 'ad_analytics_pipeline/**'
 
 jobs:
-  deploy-ad_analytics-pipeline:
+  run-ad-analytics:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: ad_analytics_pipeline
-      environment: prod
-      tools: '["deploy"]'
+      environment: dev
+      tools: '["bash"]'
+    secrets:
+      # map your repo‐level secrets into the reusable workflow
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_REGION:  ${{ secrets.GCP_REGION }}
+      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
