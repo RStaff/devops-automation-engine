@@ -1,6 +1,18 @@
 # .github/workflows/ci-template.yml
 on:
   workflow_call:
+    # 👉 tell GH which secrets this workflow expects
+    secrets:
+      GCP_PROJECT:
+        description: 'Your GCP project ID'
+        required: true
+      GCP_REGION:
+        description: 'Your GCP region'
+        required: true
+      GCP_SA_KEY:
+        description: 'Base64-encoded GCP service-account JSON key'
+        required: true
+
     inputs:
       pipeline-dir:
         description: 'Path to the pipeline directory'
@@ -17,12 +29,12 @@ on:
 
 jobs:
   run:
-    name: Run ${{ inputs.pipeline-dir }}
     runs-on: ubuntu-latest
     env:
+      # now these will actually be populated
       GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
       GCP_REGION:  ${{ secrets.GCP_REGION }}
+      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
