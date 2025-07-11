@@ -34,12 +34,6 @@ jobs:
         with:
           project_id: ${{ env.GCP_PROJECT }}
 
-      - name: Debug environment
-        run: |
-          echo "→ GCP_PROJECT=$GCP_PROJECT"
-          echo "→ GCP_REGION=$GCP_REGION"
-          echo "→ SA JSON bytes: $(echo -n "${{ secrets.GCP_SA_JSON }}" | wc -c)"
-
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
 
