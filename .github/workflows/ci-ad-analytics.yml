@@ -1,16 +1,21 @@
----
-name: "CI – Ad Analytics Pipeline"
+# .github/workflows/ci-ad-analytics.yml
+name: Ad Analytics
 
 on:
   push:
     paths:
-      - "ad_analytics_pipeline/**"
-  workflow_dispatch: {}
+      - 'ad_analytics_pipeline/**'
 
 jobs:
-  run-ad-analytics-pipeline:
+  run-ad-analytics:
+    # call the reusable template
     uses: ./.github/workflows/ci-template.yml
+
+    # inputs for the template
     with:
-      pipeline-dir: "ad_analytics_pipeline"
-      environment: "dev"
-      tools: '["extract","transform","load"]'
+      pipeline-dir: ad_analytics_pipeline
+      environment: dev
+      tools: '["bash"]'
+
+    # ▶ Forward all repo secrets, including GCP_PROJECT, GCP_REGION, GCP_SA_KEY
+    secrets: inherit
