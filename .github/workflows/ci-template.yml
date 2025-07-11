@@ -1,4 +1,4 @@
-# Reusable CI template for all pipelines
+# .github/workflows/ci-template.yml
 on:
   workflow_call:
     inputs:
@@ -17,7 +17,7 @@ on:
 
 jobs:
   run:
-    name: Run \${{ inputs.pipeline-dir }}
+    name: Run ${{ inputs.pipeline-dir }}
     runs-on: ubuntu-latest
     env:
       GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
@@ -28,12 +28,27 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: false
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: false
+
+      - name: Decode and activate GCP service account
+        run: |
+          echo "${{ env.GCP_SA_KEY }}" | base64 --decode > /tmp/sa.json
+          gcloud auth activate-service-account --key-file=/tmp/sa.json
+          gcloud config set project $GCP_PROJECT
+        shell: bash
 
       - name: Report inputs
         run: |
           echo "Pipeline-dir = ${{ inputs.pipeline-dir }}"
-          echo "Environment = ${{ inputs.environment }}"
-          echo "Tools       = ${{ inputs.tools }}"
-      # … your other shared steps …
+          echo "Environment  = ${{ inputs.environment }}"
+          echo "Tools        = ${{ inputs.tools }}"
+
+      - name: Extract raw data
+        run: bash ${{ inputs.pipeline-dir }}/extract.sh
+
+      - name: Transform data
+        run: bash ${{ inputs.pipeline-dir }}/transform.sh
+
+      - name: Load into target
+        run: bash ${{ inputs.pipeline-dir }}/load.sh
