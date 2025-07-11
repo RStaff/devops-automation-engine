@@ -1,7 +1,6 @@
 # .github/workflows/ci-template.yml
 on:
   workflow_call:
-    # ▶ these secrets will now be forwarded automatically
     secrets:
       GCP_PROJECT:
         description: 'Your GCP project ID'
