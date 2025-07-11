@@ -12,32 +12,17 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    env:
-      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-      GCP_REGION:  ${{ secrets.GCP_REGION }}
-      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Decode service account key
-        id: decode_key
-        run: |
-          # Ensure temp dir exists
-          mkdir -p "$RUNNER_TEMP"
-          # Decode the base64 secret into JSON
-          echo "$GCP_SA_KEY" \
-            | tr -d '\r' \
-            | base64 --decode > "$RUNNER_TEMP/sa.json"
-          # Export the JSON as an output for the auth step
-          echo "::set-output name=creds::$(cat $RUNNER_TEMP/sa.json)"
-
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ steps.decode_key.outputs.creds }}
-          project_id: ${{ secrets.GCP_PROJECT }}
+          # This can be a raw JSON key or a base64‐encoded JSON key
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          project_id:       ${{ secrets.GCP_PROJECT }}
 
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
@@ -46,9 +31,9 @@ jobs:
 
       - name: Debug GCP_SA_KEY
         run: |
-          echo "→ GCP_PROJECT=$GCP_PROJECT"
-          echo "→ GCP_REGION=$GCP_REGION"
-          echo "→ GCP_SA_KEY length: $(echo -n "$GCP_SA_KEY" | wc -c) bytes"
+          echo "→ GCP_PROJECT=${{ secrets.GCP_PROJECT }}"
+          echo "→ GCP_REGION=${{ secrets.GCP_REGION }}"
+          echo "→ GCP_SA_KEY length: $(echo -n "${{ secrets.GCP_SA_KEY }}" | wc -c) bytes"
 
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
