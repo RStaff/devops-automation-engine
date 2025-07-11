@@ -1,5 +1,5 @@
-# .github/workflows/ad-analytics.yml
-name: Ad Analytics
+# .github/workflows/cd-ad-analytics.yml
+name: CD – Ad Analytics
 
 on:
   push:
@@ -13,7 +13,9 @@ jobs:
     uses: ./.github/workflows/ci-template.yml
     with:
       pipeline-dir: ad_analytics_pipeline
-      environment: dev
+      environment: prod
       tools: '["bash"]'
-    # forward all repo secrets (including GCP_SA_KEY)
-    secrets: inherit
+    secrets:
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_REGION:  ${{ secrets.GCP_REGION }}
+      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
