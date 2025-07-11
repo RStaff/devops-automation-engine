@@ -10,22 +10,20 @@ permissions:
   contents: read
 
 env:
-  # will be available to your scripts
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   GCP_REGION:  ${{ secrets.GCP_REGION }}
 
 jobs:
   run:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Authenticate to GCP
-        # Official Google auth action handles decoding & activation
         uses: google-github-actions/auth@v1
         with:
+          # Pass your base64‐encoded SA key directly
           credentials_base64: ${{ secrets.GCP_SA_KEY }}
           project_id:       ${{ env.GCP_PROJECT }}
 
