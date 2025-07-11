@@ -21,6 +21,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Decode service account key
+        id: decode_key
+        run: |
+          # Ensure temp dir exists
+          mkdir -p "$RUNNER_TEMP"
+          # Decode the base64 secret into JSON
+          echo "$GCP_SA_KEY" \
+            | tr -d '\r' \
+            | base64 --decode > "$RUNNER_TEMP/sa.json"
+          # Export the JSON as an output for the auth step
+          echo "::set-output name=creds::$(cat $RUNNER_TEMP/sa.json)"
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ steps.decode_key.outputs.creds }}
+          project_id: ${{ secrets.GCP_PROJECT }}
+
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
@@ -31,23 +49,6 @@ jobs:
           echo "→ GCP_PROJECT=$GCP_PROJECT"
           echo "→ GCP_REGION=$GCP_REGION"
           echo "→ GCP_SA_KEY length: $(echo -n "$GCP_SA_KEY" | wc -c) bytes"
-
-      - name: Authenticate to GCP
-        run: |
-          # ensure the temp dir exists
-          mkdir -p "$RUNNER_TEMP"
-          
-          # decode the base64‐encoded key into a JSON file
-          echo "$GCP_SA_KEY" | tr -d '\r' | base64 --decode > "$RUNNER_TEMP/sa.json"
-          
-          # verify it decoded
-          echo "→ sa.json size: $(wc -c < "$RUNNER_TEMP/sa.json") bytes"
-          head -n3 "$RUNNER_TEMP/sa.json"
-          
-          # authenticate and set project/region
-          gcloud auth activate-service-account --key-file="$RUNNER_TEMP/sa.json"
-          gcloud config set project "$GCP_PROJECT"
-          gcloud config set run/region "$GCP_REGION"
 
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
