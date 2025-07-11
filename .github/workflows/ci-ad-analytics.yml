@@ -1,3 +1,4 @@
+# .github/workflows/ci-ad-analytics.yml
 name: CI – Ad Analytics Pipeline
 
 on:
@@ -33,10 +34,18 @@ jobs:
 
       - name: Authenticate to GCP
         run: |
-          echo "$GCP_SA_KEY" \
-            | tr -d '\r' \
-            | base64 --decode > $RUNNER_TEMP/sa.json
-          gcloud auth activate-service-account --key-file=$RUNNER_TEMP/sa.json
+          # ensure the temp dir exists
+          mkdir -p "$RUNNER_TEMP"
+          
+          # decode the base64‐encoded key into a JSON file
+          echo "$GCP_SA_KEY" | tr -d '\r' | base64 --decode > "$RUNNER_TEMP/sa.json"
+          
+          # verify it decoded
+          echo "→ sa.json size: $(wc -c < "$RUNNER_TEMP/sa.json") bytes"
+          head -n3 "$RUNNER_TEMP/sa.json"
+          
+          # authenticate and set project/region
+          gcloud auth activate-service-account --key-file="$RUNNER_TEMP/sa.json"
           gcloud config set project "$GCP_PROJECT"
           gcloud config set run/region "$GCP_REGION"
 
