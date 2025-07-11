@@ -2,9 +2,7 @@
 name: CI – Ad Analytics Pipeline
 
 on:
-  # Allow manual runs for quick testing
   workflow_dispatch:
-  # Also run automatically when pipeline files change
   push:
     paths:
       - 'ad_analytics_pipeline/**'
@@ -27,9 +25,9 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          # Pass your base64 key directly; auth@v1 will decode it
-          credentials_base64: ${{ secrets.GCP_SA_KEY }}
-          project_id:       ${{ env.GCP_PROJECT }}
+          # Now pass the raw JSON key
+          credentials_json: ${{ secrets.GCP_SA_JSON }}
+          project_id:      ${{ env.GCP_PROJECT }}
 
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
@@ -40,7 +38,7 @@ jobs:
         run: |
           echo "→ GCP_PROJECT=$GCP_PROJECT"
           echo "→ GCP_REGION=$GCP_REGION"
-          echo "→ KEY bytes: $(echo -n "${{ secrets.GCP_SA_KEY }}" | wc -c)"
+          echo "→ SA JSON bytes: $(echo -n "${{ secrets.GCP_SA_JSON }}" | wc -c)"
 
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
