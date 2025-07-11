@@ -1,7 +1,6 @@
 # .github/workflows/ci-template.yml
 on:
   workflow_call:
-    # 👉 secrets the caller must pass in
     secrets:
       GCP_PROJECT:
         description: 'Your GCP project ID'
@@ -48,20 +47,25 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
 
+      - name: Debug GCP_SA_KEY
+        run: |
+          echo "GCP_PROJECT=$GCP_PROJECT"
+          echo "GCP_REGION =$GCP_REGION"
+          echo "GCP_SA_KEY length: $(echo -n "$GCP_SA_KEY" | wc -c) bytes"
+      
       - name: Decode & activate GCP service account
         run: |
           echo "Decoding GCP_SA_KEY…"
-          # strip CRs, decode your base64 secret into a JSON key file
           echo "$GCP_SA_KEY" \
             | tr -d '\r' \
             | base64 --decode > $RUNNER_TEMP/sa.json
 
           if [[ ! -s $RUNNER_TEMP/sa.json ]]; then
-            echo "❌ /tmp/sa.json is empty—check your GCP_SA_KEY secret!"
+            echo "❌ $RUNNER_TEMP/sa.json is empty—check your GCP_SA_KEY secret!"
             exit 1
           fi
 
-          echo "/tmp/sa.json size: $(wc -c < $RUNNER_TEMP/sa.json) bytes"
+          echo "$RUNNER_TEMP/sa.json size: $(wc -c < $RUNNER_TEMP/sa.json) bytes"
           head -n3 $RUNNER_TEMP/sa.json
 
           echo "Authenticating…"
