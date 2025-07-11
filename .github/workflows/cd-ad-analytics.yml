@@ -13,8 +13,5 @@ jobs:
       pipeline-dir: ad_analytics_pipeline
       environment: dev
       tools: '["bash"]'
-    secrets:
-      # map your repo‐level secrets into the reusable workflow
-      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-      GCP_REGION:  ${{ secrets.GCP_REGION }}
-      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
+    # ▶ inherit all repo secrets, including GCP_SA_KEY
+    secrets: inherit
