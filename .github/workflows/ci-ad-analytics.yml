@@ -1,4 +1,3 @@
-# .github/workflows/ci-ad-analytics.yml
 name: CI – Ad Analytics Pipeline
 
 on:
