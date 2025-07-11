@@ -1,7 +1,7 @@
 # .github/workflows/ci-template.yml
 on:
   workflow_call:
-    # 👉 tell GH which secrets this workflow expects
+    # 👉 secrets the caller must pass in
     secrets:
       GCP_PROJECT:
         description: 'Your GCP project ID'
@@ -34,6 +34,7 @@ jobs:
       GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
       GCP_REGION:  ${{ secrets.GCP_REGION }}
       GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -50,6 +51,7 @@ jobs:
       - name: Decode & activate GCP service account
         run: |
           echo "Decoding GCP_SA_KEY…"
+          # strip CRs, decode your base64 secret into a JSON key file
           echo "$GCP_SA_KEY" \
             | tr -d '\r' \
             | base64 --decode > $RUNNER_TEMP/sa.json
@@ -59,10 +61,14 @@ jobs:
             exit 1
           fi
 
+          echo "/tmp/sa.json size: $(wc -c < $RUNNER_TEMP/sa.json) bytes"
+          head -n3 $RUNNER_TEMP/sa.json
+
+          echo "Authenticating…"
           gcloud auth activate-service-account \
             --key-file=$RUNNER_TEMP/sa.json
-          gcloud config set project $GCP_PROJECT
-          gcloud config set run/region $GCP_REGION
+          gcloud config set project "$GCP_PROJECT"
+          gcloud config set run/region "$GCP_REGION"
 
       - name: Report inputs
         run: |
