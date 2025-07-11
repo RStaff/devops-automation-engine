@@ -3,8 +3,6 @@ name: CI – Ad Analytics Pipeline
 
 on:
   push:
-    branches:
-      - 'ci/*'
     paths:
       - 'ad_analytics_pipeline/**'
 
@@ -14,6 +12,10 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
+    env:
+      # for any scripts that need them
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_REGION:  ${{ secrets.GCP_REGION }}
 
     steps:
       - name: Checkout code
@@ -22,8 +24,8 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          # This can be a raw JSON key or a base64‐encoded JSON key
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          # Directly pass your base64‐encoded key
+          credentials_base64: ${{ secrets.GCP_SA_KEY }}
           project_id:       ${{ secrets.GCP_PROJECT }}
 
       - name: Set up gcloud CLI
@@ -31,11 +33,11 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
 
-      - name: Debug GCP_SA_KEY
+      - name: Debug environment
         run: |
-          echo "→ GCP_PROJECT=${{ secrets.GCP_PROJECT }}"
-          echo "→ GCP_REGION=${{ secrets.GCP_REGION }}"
-          echo "→ GCP_SA_KEY length: $(echo -n "${{ secrets.GCP_SA_KEY }}" | wc -c) bytes"
+          echo "→ GCP_PROJECT=$GCP_PROJECT"
+          echo "→ GCP_REGION= $GCP_REGION"
+          echo "→ KEY bytes: $(echo -n "${{ secrets.GCP_SA_KEY }}" | wc -c)"
 
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
