@@ -13,5 +13,5 @@ jobs:
       pipeline-dir: ad_analytics_pipeline
       environment: dev
       tools: '["bash"]'
-    # ▶ inherit all repo secrets, including GCP_SA_KEY
+    # forward all repo secrets (including GCP_SA_KEY)
     secrets: inherit
