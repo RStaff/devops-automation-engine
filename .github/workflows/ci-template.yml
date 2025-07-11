@@ -56,4 +56,3 @@ jobs:
 
       - name: Load into target
         run: bash ${{ inputs.pipeline-dir }}/load.sh
-
