@@ -3,6 +3,8 @@ name: CI – Ad Analytics Pipeline
 
 on:
   push:
+    branches:
+      - 'ci/*'
     paths:
       - 'ad_analytics_pipeline/**'
 
