@@ -3,6 +3,8 @@ name: Ad Analytics
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'ad_analytics_pipeline/**'
 
