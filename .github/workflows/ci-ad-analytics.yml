@@ -27,18 +27,18 @@ jobs:
 
       - name: Debug GCP_SA_KEY
         run: |
-          echo "→ GCP_PROJECT=\$GCP_PROJECT"
-          echo "→ GCP_REGION =\$GCP_REGION"
-          echo "→ GCP_SA_KEY length: \$(echo -n \"\$GCP_SA_KEY\" | wc -c) bytes"
+          echo "→ GCP_PROJECT=$GCP_PROJECT"
+          echo "→ GCP_REGION=$GCP_REGION"
+          echo "→ GCP_SA_KEY length: $(echo -n "$GCP_SA_KEY" | wc -c) bytes"
 
       - name: Authenticate to GCP
         run: |
-          echo "\$GCP_SA_KEY" \
+          echo "$GCP_SA_KEY" \
             | tr -d '\r' \
-            | base64 --decode > \$RUNNER_TEMP/sa.json
-          gcloud auth activate-service-account --key-file=\$RUNNER_TEMP/sa.json
-          gcloud config set project "\$GCP_PROJECT"
-          gcloud config set run/region "\$GCP_REGION"
+            | base64 --decode > $RUNNER_TEMP/sa.json
+          gcloud auth activate-service-account --key-file=$RUNNER_TEMP/sa.json
+          gcloud config set project "$GCP_PROJECT"
+          gcloud config set run/region "$GCP_REGION"
 
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
