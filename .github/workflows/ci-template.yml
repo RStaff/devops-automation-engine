@@ -31,7 +31,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      # now these will actually be populated
       GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
       GCP_REGION:  ${{ secrets.GCP_REGION }}
       GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
@@ -43,22 +42,33 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+
       - name: Decode & activate GCP service account
         run: |
           echo "Decoding GCP_SA_KEY…"
-          echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > /tmp/sa.json
-          if [[ ! -s /tmp/sa.json ]]; then
-            echo "/tmp/sa.json is empty or missing—check your GCP_SA_KEY secret!"
+          echo "$GCP_SA_KEY" \
+            | tr -d '\r' \
+            | base64 --decode > $RUNNER_TEMP/sa.json
+
+          if [[ ! -s $RUNNER_TEMP/sa.json ]]; then
+            echo "❌ /tmp/sa.json is empty—check your GCP_SA_KEY secret!"
             exit 1
           fi
-          gcloud auth activate-service-account --key-file=/tmp/sa.json
+
+          gcloud auth activate-service-account \
+            --key-file=$RUNNER_TEMP/sa.json
           gcloud config set project $GCP_PROJECT
+          gcloud config set run/region $GCP_REGION
 
       - name: Report inputs
         run: |
           echo "Pipeline-dir = ${{ inputs.pipeline-dir }}"
-          echo "Environment = ${{ inputs.environment }}"
-          echo "Tools       = ${{ inputs.tools }}"
+          echo "Environment  = ${{ inputs.environment }}"
+          echo "Tools        = ${{ inputs.tools }}"
 
       - name: Extract raw data
         run: bash ${{ inputs.pipeline-dir }}/extract.sh
