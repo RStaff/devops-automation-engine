@@ -22,7 +22,6 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          # Pass your base64‐encoded SA key directly
           credentials_base64: ${{ secrets.GCP_SA_KEY }}
           project_id:       ${{ env.GCP_PROJECT }}
 
