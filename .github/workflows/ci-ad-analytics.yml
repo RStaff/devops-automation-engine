@@ -17,5 +17,9 @@ jobs:
       environment: dev
       tools: '["bash"]'
 
-    # ▶ Forward all repo secrets, including GCP_PROJECT, GCP_REGION, GCP_SA_KEY
-    secrets: inherit
+    # explicitly forward the three secrets the template declared
+    secrets:
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_REGION:  ${{ secrets.GCP_REGION }}
+      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
+
