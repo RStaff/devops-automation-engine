@@ -10,17 +10,20 @@ permissions:
   contents: read
 
 env:
+  # will be available to your scripts
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   GCP_REGION:  ${{ secrets.GCP_REGION }}
 
 jobs:
   run:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Authenticate to GCP
+        # Official Google auth action handles decoding & activation
         uses: google-github-actions/auth@v1
         with:
           credentials_base64: ${{ secrets.GCP_SA_KEY }}
@@ -35,7 +38,7 @@ jobs:
         run: |
           echo "→ GCP_PROJECT=$GCP_PROJECT"
           echo "→ GCP_REGION=$GCP_REGION"
-          echo "→ GCP_SA_KEY length: $(echo -n "${{ secrets.GCP_SA_KEY }}" | wc -c) bytes"
+          echo "→ KEY bytes: $(echo -n "${{ secrets.GCP_SA_KEY }}" | wc -c)"
 
       - name: Extract raw data
         run: bash ad_analytics_pipeline/extract.sh
