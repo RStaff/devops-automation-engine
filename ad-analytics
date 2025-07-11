@@ -1,0 +1,65 @@
+# .github/workflows/ad-analytics.yml
+name: Ad Analytics
+
+on:
+  push:
+    paths:
+      - 'ad_analytics_pipeline/**'
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_REGION:  ${{ secrets.GCP_REGION }}
+      GCP_SA_KEY:  ${{ secrets.GCP_SA_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+
+      - name: Debug GCP_SA_KEY
+        run: |
+          echo "→ GCP_PROJECT=$GCP_PROJECT"
+          echo "→ GCP_REGION =$GCP_REGION"
+          echo "→ GCP_SA_KEY length: $(echo -n "$GCP_SA_KEY" | wc -c) bytes"
+
+      - name: Authenticate to GCP
+        run: |
+          echo "Decoding GCP_SA_KEY…"
+          echo "$GCP_SA_KEY" \
+            | tr -d '\r' \
+            | base64 --decode > $RUNNER_TEMP/sa.json
+
+          if [[ ! -s $RUNNER_TEMP/sa.json ]]; then
+            echo "❌ /tmp/sa.json is empty—check your GCP_SA_KEY secret!"
+            exit 1
+          fi
+
+          gcloud auth activate-service-account \
+            --key-file=$RUNNER_TEMP/sa.json
+          gcloud config set project "$GCP_PROJECT"
+          gcloud config set run/region "$GCP_REGION"
+
+      - name: Report inputs
+        run: |
+          echo "Pipeline-dir = ad_analytics_pipeline"
+          echo "Environment  = dev"
+          echo "Tools        = [bash]"
+
+      - name: Extract raw data
+        run: bash ad_analytics_pipeline/extract.sh
+
+      - name: Transform data
+        run: bash ad_analytics_pipeline/transform.sh
+
+      - name: Load into target
+        run: bash ad_analytics_pipeline/load.sh
