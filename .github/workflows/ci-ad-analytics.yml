@@ -10,9 +10,9 @@ on:
       - 'ad_analytics_pipeline/**'
 
 permissions:
-  contents: read    # checkout only
-  id-token: write   # needed for google-github-actions/auth@v1
-  
+  contents: read
+  id-token: write
+
 env:
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   GCP_REGION:  ${{ secrets.GCP_REGION }}
