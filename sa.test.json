@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "adlink-agent-demo",
+  "private_key_id": "ff06ece7add1364c09e42177a1b859805a59dde8",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDLOwTZS/r8qK2G\n+7ZC88cO0/EQrvM+gcjuFUv85fi9/2IDnh1eTAfGeU8Skh/cXaumvdiou5kL3K/D\nXjMyhta9T48PzZAJdmQGC+NUBF8U2EMmSx8Hrjqs3qPoOp1xB73hhL17o7Nfq4jb\nYuasakKVQ1gpjf/B7ejn0xV3m0/wbSVvPG46VwT78OGPk3+s1a5n0emcpFDsTct6\ngWGYO4jSU4jWpxV5fN5sQh2Uy1DY32MMXaBoYdah85DTjYi9wjK3tv6Vv03xA37N\nOSUJFZXuhHKVitP+t+lwf1+V7F0s9XmZ8bbGCgv/sSEs2cjYsVmQGDxDm7jCgMa/\niT+i6iXXAgMBAAECggEAVxfgUJUYpu1MjDPT3GZnMIoQXXN0J53r82fqDCOr0RSg\nNuesM0yG6n3zLoSzpbb4yDjEoC7g/C3jnuiALU+OuEtfhki0SPHVFKhEkC1dZ+vz\n/vWjgyGd4JZ7DJsN/LHyJDLEFzfEt6Olv0rniwzwotHc9tX1PHEN5kdWBE9pVyFS\n8hxcCD2DMdoPQaZL9yzawbyeYiS/A490YRSU9LU+Hm2DlpxTtudJmAkyB43zhCJV\nNrE+CQglBhnddemy1pooisrwqDviG6z4tAYItGfSGmjazns/Ezwz4QOEYdsX3fM4\n7Pluji5druWiwk5id+dpSa68vGv7Hz5Yt68UGYdu9QKBgQD46PArnqysRoLNYFG7\ntZ86a8CURRxo1s8CVerVp57G44qIqvZp6vOcGyZwp9F0UZ5wBVm1pe8/jrFOiMk7\nKnDKBbcIAJkXX78Q1RAhDLCISatCleYTPzJMjpzruVOASeLBdOguezxFl16WhMo2\n2J50HBIrVJryrkKec1r/MoMvXQKBgQDRBPwdcyO9sf7xZAFLO544F/J4A1kQIxvc\nZL6ZBG5fbgCY/Moe8kJSR2JhUHUjDhf4NYVC/ruVLn7a5dbZjVkCc9lnDk0eFX5h\nIq387nLSSz5YFDA3ggi0PNXR8rlcROGN044GB0Mfgk+ebEYpiPEJa5U8j6vr7VqV\nPXULpyo6wwKBgQDOg0Uwi5er31yK1Q069fdD2z6ORcDKYt6hi3MpDMc5MHQx69ZC\nDoNL02LTOQkYvtb7DhVeFmwniVYmWGrMweuOUauH4iciM3gsmPmm0gZtLOIAfqnC\n8j3jMreTA9H5sFOIOlygo/JfsrTxoP68/oCIyPlyJeHg0x/GouKutNQOqQKBgQCO\n9XHaUp3naI6OW2/nHOeiRf64xtFrkBfGLcGOttEmw/30pTE46UkjLV/EX1s+lq0e\nPrzejYuPBTYOUZUZRuvSGZpgOg/Uu66skSOfExfFbWE+rNAtpup9G/7CkdjlmtcK\nQd+pj94A9wetuzBhyB/T6ZkwyrMzsit6V4Zuae8gMQKBgQDmhbCugmnbbaOASHJN\nw30QyFKxrizETs6ZKzbo3DcdV/2N+ySufoQzhSa99C071lzraVzmrERRIGiL91Or\nDU01wcx43zkVLAJnSMlrpza8kUfsJDV/EEnGCKyp8vvi69DPooAgBsMy6FR+ofhn\n4xQJE0WLP6NmBkm8KTe3Kx/IUA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "gha-actions@adlink-agent-demo.iam.gserviceaccount.com",
+  "client_id": "107835576185666868638",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gha-actions%40adlink-agent-demo.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

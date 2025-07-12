@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERTICALS=(
+  ad_analytics
+  lead_generation
+  content_personalization
+  ai
+  mlops
+)
+
+for v in "${VERTICALS[@]}"; do
+  dir="${v}_pipeline"
+  echo "⏳  Setting up $dir…"
+  mkdir -p "$dir"
+
+  for step in extract transform load; do
+    script="$dir/${step}.sh"
+    if [ ! -f "$script" ]; then
+      cat > "$script" <<EOFD
+#!/usr/bin/env bash
+set -euo pipefail
+# stub $step for $v pipeline
+cd "\$(dirname "\$0")/.."
+echo "[$v] running $step (stub)"
+EOFD
+      chmod +x "$script"
+      echo "    ✓ created $script"
+    else
+      echo "    • $script already exists"
+    fi
+  done
+done
+
+echo "✅  All pipelines scaffolded."
