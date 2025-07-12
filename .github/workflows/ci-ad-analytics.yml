@@ -10,13 +10,13 @@ on:
       - 'ad_analytics_pipeline/**'
 
 permissions:
-  contents: read
-  id-token: write
+  contents: read    # checkout only
+  id-token: write   # for OIDC auth
 
 env:
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   GCP_REGION:  ${{ secrets.GCP_REGION }}
-  
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -28,7 +28,6 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          # Now pass the raw JSON key
           credentials_json: ${{ secrets.GCP_SA_JSON }}
           project_id:      ${{ env.GCP_PROJECT }}
 
