@@ -77,10 +77,10 @@ jobs:
           echo "Tools        = ${{ inputs.tools }}"
 
       - name: Extract raw data
-        run: bash ${{ inputs.pipeline-dir }}/extract.sh
+        run: bash template_pipeline/extract.sh
 
       - name: Transform data
-        run: bash ${{ inputs.pipeline-dir }}/transform.sh
+        run: bash template_pipeline/transform.sh
 
       - name: Load into target
-        run: bash ${{ inputs.pipeline-dir }}/load.sh
+        run: bash template_pipeline/load.sh

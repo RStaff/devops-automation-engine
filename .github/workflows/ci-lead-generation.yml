@@ -1,4 +1,4 @@
-name: CI – lead generation Pipeline
+name: CI – UleadUgeneration Pipeline
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: CI – Website Pipeline
+name: CI – Uwebsite Pipeline
 
 on:
   push:

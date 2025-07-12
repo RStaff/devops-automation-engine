@@ -1,4 +1,4 @@
-name: CI – Chatbot Pipeline
+name: CI – Uchatbot Pipeline
 
 on:
   push:

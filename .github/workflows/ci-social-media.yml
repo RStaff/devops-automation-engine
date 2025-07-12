@@ -1,4 +1,4 @@
-name: CI – social media Pipeline
+name: CI – UsocialUmedia Pipeline
 
 on:
   push:

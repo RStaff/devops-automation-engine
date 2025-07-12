@@ -1,4 +1,4 @@
-name: CI – landing page Pipeline
+name: CI – UlandingUpage Pipeline
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: CI – content personalization Pipeline
+name: CI – UcontentUpersonalization Pipeline
 
 on:
   push:

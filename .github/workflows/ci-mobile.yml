@@ -1,4 +1,4 @@
-name: CI – Mobile Pipeline
+name: CI – Umobile Pipeline
 
 on:
   push:
