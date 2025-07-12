@@ -5,6 +5,9 @@ on:
   push:
     paths:
       - 'ad_analytics_pipeline/**'
+  pull_request:
+    paths:
+      - 'ad_analytics_pipeline/**'
 
 permissions:
   contents: read    # checkout only
