@@ -1,4 +1,4 @@
-name: CI – Umlops Pipeline
+name: CI – mlops Pipeline
 
 on:
   push:

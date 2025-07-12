@@ -1,4 +1,4 @@
-name: CI – UmarketingUcampaign Pipeline
+name: CI – marketingUcampaign Pipeline
 
 on:
   push:

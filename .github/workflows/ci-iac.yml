@@ -1,4 +1,4 @@
-name: CI – Uiac Pipeline
+name: CI – iac Pipeline
 
 on:
   push:

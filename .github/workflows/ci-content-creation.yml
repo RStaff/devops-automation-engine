@@ -1,4 +1,4 @@
-name: CI – UcontentUcreation Pipeline
+name: CI – contentUcreation Pipeline
 
 on:
   push:

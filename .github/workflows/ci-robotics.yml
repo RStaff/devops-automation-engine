@@ -1,4 +1,4 @@
-name: CI – Urobotics Pipeline
+name: CI – robotics Pipeline
 
 on:
   push:

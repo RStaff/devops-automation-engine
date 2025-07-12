@@ -1,4 +1,4 @@
-name: CI – Uingestion Pipeline
+name: CI – ingestion Pipeline
 
 on:
   push:

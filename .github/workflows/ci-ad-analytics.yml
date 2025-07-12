@@ -1,5 +1,5 @@
 # .github/workflows/ci-ad-analytics.yml
-name: CI – UadUanalytics Pipeline
+name: CI – adUanalytics Pipeline
 
 on:
   push:

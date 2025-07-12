@@ -1,4 +1,4 @@
-name: CI – UemailUcampaign Pipeline
+name: CI – emailUcampaign Pipeline
 
 on:
   push:
