@@ -1,0 +1,6 @@
+environment: dev
+pipeline-dir: website_pipeline
+tools:
+  - npm
+  - docker
+  - helm

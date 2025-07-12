@@ -1,0 +1,5 @@
+# Terraform local state, backups and provider plugins
+infra/.terraform/
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+.env

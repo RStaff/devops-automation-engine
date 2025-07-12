@@ -1,0 +1,41 @@
+name: CI – support pipeline Pipeline
+
+on:
+  push:
+    paths:
+      - 'support_pipeline/**'
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+  GCP_REGION:  ${{ secrets.GCP_REGION }}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_JSON }}
+          project_id:      ${{ env.GCP_PROJECT }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Extract raw data
+        run: bash support_pipeline/extract.sh
+
+      - name: Transform data
+        run: bash support_pipeline/transform.sh
+
+      - name: Load into target
+        run: bash support_pipeline/load.sh

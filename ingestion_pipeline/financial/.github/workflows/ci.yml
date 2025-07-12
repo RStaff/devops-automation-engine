@@ -1,0 +1,73 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  schedule:
+    - cron: '0 3 * * *'          # nightly security scan
+env:
+  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+jobs:
+  build-test-scan:
+    runs-on: ubuntu-latest
+
+    env:            # ← applies to every step
+      SHA: ${{ github.sha }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ───── Python deps & tests (optional) ─────
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run unit tests
+        run: |
+          if [ -f pytest.ini ] || [ -d tests ]; then pytest -q; else echo "No tests yet"; fi
+
+      - name: Static security scan
+        run: |
+          if pip show bandit >/dev/null 2>&1; then bandit -r app || true; fi
+
+      # ───── Build & scan container ─────
+      - name: Set IMAGE variable
+        run: |
+          echo "IMAGE=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]'):${SHA}" >> $GITHUB_ENV
+
+      - name: Build image
+        run: docker build -t "$IMAGE" .
+
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@0.19.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          format: table
+
+      # ───── Push on main ─────
+      - name: Log in to GHCR
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        if: github.ref == 'refs/heads/main'
+        run: docker push "$IMAGE"
+
+  deploy:
+    needs: build-test-scan
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Stub deploy
+        run: echo "Simulated deploy OK"
