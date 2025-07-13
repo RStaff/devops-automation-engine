@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Buy My Product</title>
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <h1>Your Product — $50.00</h1>
+    <button id="checkout">Buy Now</button>
+    <script>
+      // replace with your Stripe publishable key:
+      const stripe = Stripe('pk_test_XXXXXXXXXXXXXXXX');
+      document.getElementById('checkout').addEventListener('click', () => {
+        fetch('/create-checkout-session', { method: 'POST' })
+          .then(res => res.json())
+          .then(({ url }) => { window.location = url; })
+          .catch(console.error);
+      });
+    </script>
+  </body>
+</html>
