@@ -21,10 +21,7 @@ export default function Home() {
   return (
     <div style={{ textAlign: 'center', marginTop: '4rem' }}>
       <h1>Your Product — $50.00</h1>
-      <button
-        onClick={handleCheckout}
-        style={{ padding: '0.75rem 1.5rem', fontSize: '1rem', cursor: 'pointer' }}
-      >
+      <button onClick={handleCheckout} style={{ padding: '0.75rem 1.5rem', fontSize: '1rem', cursor: 'pointer' }}>
         Buy Now
       </button>
     </div>
