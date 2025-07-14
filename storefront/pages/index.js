@@ -11,7 +11,6 @@ export default function Home() {
     const { url } = await res.json();
     window.location.href = url;
   };
-
   return (
     <div style={{ textAlign: 'center', marginTop: '4rem' }}>
       <h1>Your Product — $50.00</h1>
