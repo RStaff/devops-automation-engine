@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/create-checkout-session.js": {
+      "protect": false
+    }
+  }
+}
+
