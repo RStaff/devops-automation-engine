@@ -1,28 +1,33 @@
-import Stripe from 'stripe'
+// pages/api/webhooks.js
+
 import { buffer } from 'micro'
+import Stripe from 'stripe'
+import { PrismaClient } from '@prisma/client'
 
 export const config = {
   api: {
-    // We need raw body for signature verification
+    // Disable Next.js body parsing so we can verify raw body
     bodyParser: false,
   },
 }
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-  // Only accept POST
+  // 1) Only accept POST
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).end('Method Not Allowed')
   }
 
-  // Retrieve the raw body as a buffer
+  // 2) Retrieve the raw body & Stripe signature header
   const buf = await buffer(req)
   const sig = req.headers['stripe-signature']
 
   let event
   try {
+    // 3) Verify signature
     event = stripe.webhooks.constructEvent(
       buf.toString(),
       sig,
@@ -33,13 +38,28 @@ export default async function handler(req, res) {
     return res.status(400).send(`Webhook Error: ${err.message}`)
   }
 
-  // Handle the event
+  // 4) Handle the event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
-    console.log('✅  Session completed:', session.id)
-    // TODO: fulfill the purchase: e.g. save session.id into your database
+    console.log('✅  Checkout session completed:', session.id)
+
+    // 5) Persist to your database
+    try {
+      await prisma.order.create({
+        data: {
+          stripeSessionId: session.id,
+          amountTotal: session.amount_total,
+          customerEmail: session.customer_email,
+        },
+      })
+      console.log('💾  Order saved:', session.id)
+    } catch (dbErr) {
+      console.error('❌  Failed to save order:', dbErr)
+      // You might choose to retry or alert here
+    }
   }
 
-  // Return a 200 to acknowledge receipt of the event
+  // 6) Return a 200 to acknowledge receipt
   res.status(200).json({ received: true })
 }
+
