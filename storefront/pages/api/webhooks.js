@@ -1,17 +1,10 @@
-import Stripe from "stripe"
-import { buffer } from "micro"
-
-export const config = { api: { bodyParser: false } }
-
-// pages/api/webhooks.js
-
-import { buffer } from 'micro'
 import Stripe from 'stripe'
+import { buffer } from 'micro'
 import { PrismaClient } from '@prisma/client'
 
 export const config = {
   api: {
-    // Disable Next.js body parsing so we can verify raw body
+    // we need the raw body to verify Stripe’s signature
     bodyParser: false,
   },
 }
@@ -20,79 +13,43 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST")
-    return res.status(405).end("Method Not Allowed")
-  }
-
-  let event
-  try {
-    const buf = await buffer(req)
-    const sig = req.headers["stripe-signature"]
-    event = new Stripe(process.env.STRIPE_SECRET_KEY).webhooks.constructEvent(
-      buf.toString(),
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    )
-  } catch (err) {
-    console.error("⚠️  Webhook signature verification failed:", err.message)
-    return res.status(400).send(`Webhook Error: ${err.message}`)
-  }
-
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object
-    console.log("✅  Session completed:", session.id)
-    // TODO: fulfill order, e.g. save session.id to your DB
-  }
-
-  res.status(200).json({ received: true })
-}
-eq, res) {
-  // 1) Only accept POST
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).end('Method Not Allowed')
   }
 
-  // 2) Retrieve the raw body & Stripe signature header
+  // 1) Read raw body
   const buf = await buffer(req)
   const sig = req.headers['stripe-signature']
 
+  // 2) Verify signature
   let event
   try {
-    // 3) Verify signature
     event = stripe.webhooks.constructEvent(
       buf.toString(),
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     )
   } catch (err) {
-    console.error('⚠️  Webhook signature verification failed:', err.message)
+    console.error('⚠️ Webhook signature verification failed:', err.message)
     return res.status(400).send(`Webhook Error: ${err.message}`)
   }
 
-  // 4) Handle the event
+  // 3) Handle the event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
-    console.log('✅  Checkout session completed:', session.id)
+    console.log('✅  Session completed:', session.id)
 
-    // 5) Persist to your database
-    try {
-      await prisma.order.create({
-        data: {
-          stripeSessionId: session.id,
-          amountTotal: session.amount_total,
-          customerEmail: session.customer_email,
-        },
-      })
-      console.log('💾  Order saved:', session.id)
-    } catch (dbErr) {
-      console.error('❌  Failed to save order:', dbErr)
-      // You might choose to retry or alert here
-    }
+    // 4) Persist to your database
+    await prisma.order.create({
+      data: {
+        stripeSessionId: session.id,
+        amountTotal: session.amount_total,
+        customerEmail: session.customer_email,
+      },
+    })
   }
 
-  // 6) Return a 200 to acknowledge receipt
+  // 5) Return a 200 to Stripe
   res.status(200).json({ received: true })
 }
-
