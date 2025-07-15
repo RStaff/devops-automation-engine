@@ -1,3 +1,4 @@
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL
 export const config = {
   runtime: 'nodejs',
 };
@@ -23,8 +24,8 @@ export default async function handler(req, res) {
         quantity: 1
       }],
       mode: 'payment',
-      success_url: `${req.headers.origin}/success.html`,
-      cancel_url: `${req.headers.origin}/`
+          success_url: `${baseUrl}/success.html`,
+          cancel_url: `${baseUrl}/`,
     });
     return res.status(200).json({ url: session.url });
   } catch (err) {
