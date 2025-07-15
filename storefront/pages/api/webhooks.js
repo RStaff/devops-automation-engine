@@ -1,28 +1,26 @@
-import Stripe from 'stripe'
-import { buffer } from 'micro'
-import { PrismaClient } from '@prisma/client'
+import { buffer } from "micro"
+import Stripe from "stripe"
+import { PrismaClient } from "@prisma/client"
 
+// Disable Next.js’s built-in body parsing so we can verify the raw Stripe signature
 export const config = {
-  api: {
-    // we need the raw body to verify Stripe’s signature
-    bodyParser: false,
-  },
+  api: { bodyParser: false }
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2024-09-30"
+})
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST')
-    return res.status(405).end('Method Not Allowed')
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST")
+    return res.status(405).end("Method Not Allowed")
   }
 
-  // 1) Read raw body
+  const sig = req.headers["stripe-signature"]
   const buf = await buffer(req)
-  const sig = req.headers['stripe-signature']
 
-  // 2) Verify signature
   let event
   try {
     event = stripe.webhooks.constructEvent(
@@ -31,25 +29,23 @@ export default async function handler(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     )
   } catch (err) {
-    console.error('⚠️ Webhook signature verification failed:', err.message)
+    console.error("⚠️  Webhook signature verification failed:", err.message)
     return res.status(400).send(`Webhook Error: ${err.message}`)
   }
 
-  // 3) Handle the event
-  if (event.type === 'checkout.session.completed') {
+  if (event.type === "checkout.session.completed") {
     const session = event.data.object
-    console.log('✅  Session completed:', session.id)
+    console.log("✅  Session completed:", session.id)
 
-    // 4) Persist to your database
+    // Persist to your DB
     await prisma.order.create({
       data: {
         stripeSessionId: session.id,
         amountTotal: session.amount_total,
-        customerEmail: session.customer_email,
-      },
+        customerEmail: session.customer_email
+      }
     })
   }
 
-  // 5) Return a 200 to Stripe
   res.status(200).json({ received: true })
 }
