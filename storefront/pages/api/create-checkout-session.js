@@ -1,11 +1,16 @@
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+export const config = {
+  runtime: 'nodejs',
+};
 
 export default async function handler(req, res) {
-  console.log('👉 received', req.method, req.url);
   if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
     return res.status(405).end();
   }
+
+  const Stripe = require('stripe');
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -23,7 +28,7 @@ export default async function handler(req, res) {
     });
     return res.status(200).json({ url: session.url });
   } catch (err) {
-    console.error('⚠️ stripe error:', err);
-    return res.status(500).json({ error: 'Internal error' });
+    console.error('Stripe error:', err);
+    return res.status(500).json({ error: 'Stripe error', message: err.message });
   }
 }
