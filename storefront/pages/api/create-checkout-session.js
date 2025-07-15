@@ -1,16 +1,8 @@
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL
-export const config = {
-  runtime: 'nodejs',
-};
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).end();
-  }
-
-  const Stripe = require('stripe');
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  if (req.method !== 'POST') return res.status(405).end()
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -24,12 +16,13 @@ export default async function handler(req, res) {
         quantity: 1
       }],
       mode: 'payment',
-                  success_url: `${baseUrl}/success.html`,
-                  cancel_url:  `${baseUrl}/`,
-    });
-    return res.status(200).json({ url: session.url });
+      success_url: `${baseUrl}/success.html`,
+      cancel_url:  `${baseUrl}/`
+    })
+
+    return res.status(200).json({ url: session.url })
   } catch (err) {
-    console.error('Stripe error:', err);
-    return res.status(500).json({ error: 'Stripe error', message: err.message });
+    console.error('Stripe error:', err)
+    return res.status(500).json({ error: 'Stripe error', message: err.message })
   }
 }
