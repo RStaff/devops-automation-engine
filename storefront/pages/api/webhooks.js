@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
-    // TODO: fulfill order (e.g., save session.id to your DB)
+    // TODO: fulfill order (e.g. save session.id to your DB)
   }
 
   res.status(200).json({ received: true })
