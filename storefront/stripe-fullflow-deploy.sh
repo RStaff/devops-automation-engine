@@ -73,7 +73,7 @@ cat > public/success.html <<PAGE
 <html><body>
   <h1>🎉 Success!</h1>
   <p>Your purchase is complete. Download your agent bundle here:</p>
-  <a href="/downloads/agent.zip" download>Download agent.zip</a>
+  <a href="/downloads/https://your-bucket.s3.amazonaws.com/agent_v2.zip" download>Download https://your-bucket.s3.amazonaws.com/agent_v2.zip</a>
 </body></html>
 PAGE
 echo "✔️  success.html in place"
