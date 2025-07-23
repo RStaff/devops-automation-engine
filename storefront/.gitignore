@@ -26,3 +26,5 @@ yarn-error.log*
 /src/generated/prisma
 .env.local
 .env.local
+!/scripts/
+!/scripts/**
